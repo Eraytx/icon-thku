@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>iCON | Türk Hava Kurumu Üniversitesi - More Than A Club</title>
+  <meta name="description" content="iCON (Innovation, Career, Organization, Network) - Türk Hava Kurumu Üniversitesi resmi öğrenci topluluğu dijital portalı.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Atmospheric Canvas for city lights & night stars -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Ambient Sound Toggle / View Mode Control -->
+  <div class="top-controls">
+    <button id="sound-toggle" class="control-btn" title="Atmosferik Ses / Efekt">
+      <svg class="sound-icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+      <svg class="sound-icon-off hidden" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+      <span class="control-label">Atmosfer</span>
+    </button>
+    <button id="view-mode-toggle" class="control-btn" title="Görünüm Modunu Değiştir">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="5" y="2" width="14" height="20" rx="3"></rect>
+        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+      </svg>
+      <span class="control-label" id="view-mode-label">Mobil Odak</span>
+    </button>
+  </div>
+
+  <!-- Main Background Container with Cinematic Image -->
+  <div class="page-container">
+    <div class="site-wrapper" id="siteWrapper">
+      
+      <!-- Left Column: Branding, University, and Slogans -->
+      <section class="hero-left-column">
+        
+        <header class="brand-header">
+          <div class="icon-brand">
+            <span class="i-letter">i</span><span class="con-letters">CON</span>
+          </div>
+          <div class="brand-subtext">
+            <span>INNOVATION</span>
+            <span>•</span>
+            <span>CAREER</span>
+            <span>•</span>
+            <span>ORGANIZATION</span>
+            <span>•</span>
+            <span>NETWORK</span>
+          </div>
+        </header>
+
+        <div class="university-block">
+          <div class="uni-badge-row">
+            <svg class="thku-crest-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <div class="uni-titles">
+              <span class="uni-main">TÜRK HAVA KURUMU ÜNİVERSİTESİ</span>
+              <span class="uni-sub">IDEAS • PEOPLE • EXPERIENCES • A STRONGER TOMORROW</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="slogans-block">
+          <div class="club-motto">
+            <span class="motto-accent-bar"></span>
+            <span class="motto-title">MORE THAN A CLUB.</span>
+          </div>
+
+          <div class="script-accent-box">
+            <span class="script-p1">Higher</span>
+            <span class="script-p2">Ideas</span>
+            <span class="script-p3">Further</span>
+            <span class="script-p4">Together</span>
+          </div>
+
+          <div class="discipline-badge">
+            <div class="wings-symbol">
+              <svg viewBox="0 0 80 40" width="46" height="24" fill="currentColor">
+                <circle cx="40" cy="20" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M40 14 L28 20 L40 22 L52 20 Z" fill="currentColor"/>
+                <path d="M28 20 Q 12 12, 0 22 Q 14 26, 28 22 Z" fill="currentColor"/>
+                <path d="M52 20 Q 68 12, 80 22 Q 66 26, 52 22 Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="discipline-text">
+              <span>DISCIPLINE</span>
+              <span>CREATES</span>
+              <span>FREEDOM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="left-footer-meta">
+          <div class="foot-mottos">
+            <p>SAME STUDENTS.</p>
+            <p>BIGGER HORIZONS.</p>
+          </div>
+          <div class="foot-location-tag">
+            <span>ANKARA, TÜRKİYE</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Interactive Links Hub & Social Links -->
+      <section class="action-right-column">
+        
+        <main class="hub-container">
+          
+          <!-- Link 1: TOPLULUĞA KATIL (Featured Glow) -->
+          <button class="glass-card primary-card glow-active" id="btn-join" data-modal="modal-join">
+            <div class="card-glow-layer"></div>
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="card-text-box">
+              <h2 class="card-title">TOPLULUĞA KATIL</h2>
+              <p class="card-subtitle">Birlikte daha fazlasını başaralım.</p>
+            </div>
+            <div class="card-arrow-box">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Link 2: PROJELERİMİZ -->
+          <button class="glass-card" id="btn-projects" data-modal="modal-projects">
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <div class="card-text-box">
+              <h2 class="card-title">PROJELERİMİZ</h2>
+              <p class="card-subtitle">Fikirlerden gerçeğe.</p>
+            </div>
+            <div class="card-arrow-box">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Link 3: ETKİNLİKLERİMİZ -->
+          <button class="glass-card" id="btn-events" data-modal="modal-events">
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <circle cx="8" cy="14" r="1" fill="currentColor"></circle>
+                <circle cx="12" cy="14" r="1" fill="currentColor"></circle>
+                <circle cx="16" cy="14" r="1" fill="currentColor"></circle>
+                <circle cx="8" cy="18" r="1" fill="currentColor"></circle>
+                <circle cx="12" cy="18" r="1" fill="currentColor"></circle>
+                <circle cx="16" cy="18" r="1" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="card-text-box">
+              <h2 class="card-title">ETKİNLİKLERİMİZ</h2>
+              <p class="card-subtitle">Deneyimle, keşfet, bağ kur.</p>
+            </div>
+            <div class="card-arrow-box">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Link 4: EKİPLERİMİZ -->
+          <button class="glass-card" id="btn-teams" data-modal="modal-teams">
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="22" y1="11" x2="16" y2="11"></line>
+              </svg>
+            </div>
+            <div class="card-text-box">
+              <h2 class="card-title">EKİPLERİMİZ</h2>
+              <p class="card-subtitle">Senin yeteneğin, bizim gücümüz.</p>
+            </div>
+            <div class="card-arrow-box">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Link 5: iCON HAKKINDA -->
+          <button class="glass-card" id="btn-about" data-modal="modal-about">
+            <div class="card-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            </div>
+            <div class="card-text-box">
+              <h2 class="card-title">iCON HAKKINDA</h2>
+              <p class="card-subtitle">Vizyonumuz, değerlerimiz, hikayemiz.</p>
+            </div>
+            <div class="card-arrow-box">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </button>
+
+        </main>
+
+        <!-- Social Media Section -->
+        <section class="social-section">
+          <div class="social-divider">
+            <span class="div-line"></span>
+            <span class="div-text">iCON'U TAKİP ET</span>
+            <span class="div-line"></span>
+          </div>
+
+          <div class="social-icons">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
+          </div>
+        </section>
+
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: TOPLULUĞA KATIL -->
+  <div class="modal-backdrop" id="modal-join">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Kapat">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">THKÜ • BAŞVURU</div>
+        <h3 class="modal-title">Topluluğa Katıl</h3>
+        <p class="modal-desc">iCON ailesiyle havacılık, inovasyon ve kariyer yolculuğuna ilk adımı at.</p>
+      </div>
+      <form id="join-form" class="modal-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">Ad Soyad *</label>
+            <input type="text" id="fullName" required placeholder="örn. Ali Yılmaz">
+          </div>
+          <div class="form-group">
+            <label for="studentId">Öğrenci Numarası *</label>
+            <input type="text" id="studentId" required placeholder="örn. 220501000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="department">Bölüm / Program *</label>
+            <select id="department" required>
+              <option value="" disabled selected>Bölümünüzü seçin...</option>
+              <option value="Uçak Mühendisliği">Uçak Mühendisliği</option>
+              <option value="Havacılık ve Uzay Mühendisliği">Havacılık ve Uzay Mühendisliği</option>
+              <option value="Yazılım Mühendisliği">Yazılım Mühendisliği</option>
+              <option value="Bilgisayar Mühendisliği">Bilgisayar Mühendisliği</option>
+              <option value="Elektrik-Elektronik Mühendisliği">Elektrik-Elektronik Mühendisliği</option>
+              <option value="Makine Mühendisliği">Makine Mühendisliği</option>
+              <option value="Havacılık Yönetimi">Havacılık Yönetimi</option>
+              <option value="Pilotaj">Pilotaj</option>
+              <option value="Hava Trafik Kontrolü">Hava Trafik Kontrolü</option>
+              <option value="Diğer">Diğer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="email">E-Posta Adresi *</label>
+            <input type="email" id="email" required placeholder="ad.soyad@stu.thk.edu.tr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="teamInterest">İlgilendiğin Ekip *</label>
+          <select id="teamInterest" required>
+            <option value="" disabled selected>Katılmak istediğin ekip...</option>
+            <option value="AR-GE & Mühendislik Projeleri">AR-GE & İHA / Mühendislik Projeleri</option>
+            <option value="Yazılım & Dijital Geliştirme">Yazılım & Dijital Geliştirme</option>
+            <option value="Organizasyon & Etkinlik">Organizasyon & Etkinlik Planlama</option>
+            <option value="Medya, Tasarım & Sosyal Medya">Medya, Tasarım & Sosyal Medya</option>
+            <option value="Sponsorluk & Dış İlişkiler">Sponsorluk & Dış İlişkiler</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="motivation">Neden iCON? (Kısaca kendinden bahset)</label>
+          <textarea id="motivation" rows="3" placeholder="Yeteneklerin, hedeflerin ve seni heyecanlandıran fikirler..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">
+          <span>Başvuruyu Tamamla</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </form>
+      <div id="join-success" class="success-message hidden">
+        <div class="success-icon">✓</div>
+        <h4>Başvurunuz Alındı!</h4>
+        <p>Aramıza hoş geldin! Ekip liderlerimiz en kısa sürede seninle iletişime geçecektir.</p>
+        <button class="reset-form-btn">Yeni Başvuru Yap</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: PROJELERİMİZ -->
+  <div class="modal-backdrop" id="modal-projects">
+    <div class="modal-box modal-wide">
+      <button class="modal-close" aria-label="Kapat">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">FİKİRLERDEN GERÇEĞE</div>
+        <h3 class="modal-title">Projelerimiz</h3>
+        <p class="modal-desc">Üyelerimizin havacılık, savunma sanayii ve yazılım alanlarında geliştirdiği vizyoner projeler.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="project-item">
+          <div class="project-status">AKTİF GELİŞTİRME</div>
+          <h4>Otonom İHA & Hedef Takip Sistemi</h4>
+          <p>Yapay zeka tabanlı görüntü işleme ve otonom rota planlaması ile Teknofest ve uluslararası yarışmalara hazırlanan insansız hava aracı projesi.</p>
+          <div class="project-tags">
+            <span>ROS 2</span><span>Python</span><span>OpenCV</span><span>Avionics</span>
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-status">DEVAM EDİYOR</div>
+          <h4>iCON Flight Tracker & Hub</h4>
+          <p>Öğrenciler için gerçek zamanlı uçuş telemetri görselleştirme ve THKÜ kampüs içi havacılık ağı portalı.</p>
+          <div class="project-tags">
+            <span>JavaScript</span><span>Vite</span><span>WebSockets</span><span>APIs</span>
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-status">YENİ BAŞLADI</div>
+          <h4>Sürdürülebilir Havacılık Simülasyonu</h4>
+          <p>Elektrikli ve hibrit hava araçlarının menzil ve batarya optimizasyonu simülasyonu modellemesi.</p>
+          <div class="project-tags">
+            <span>MATLAB</span><span>Simulink</span><span>Aero Dynamics</span>
+          </div>
+        </div>
+        <div class="project-item">
+          <div class="project-status">TAMAMLANDI</div>
+          <h4>Kariyer & Mentorluk Köprüsü</h4>
+          <p>Sektör liderleri (TUSAŞ, ASELSAN, Roketsan, THY) ile öğrencileri bir araya getiren birebir mentorluk ağı.</p>
+          <div class="project-tags">
+            <span>Networking</span><span>Workshop</span><span>Mentorship</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: ETKİNLİKLERİMİZ -->
+  <div class="modal-backdrop" id="modal-events">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Kapat">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">AJANDA & TAKVİM</div>
+        <h3 class="modal-title">Etkinliklerimiz</h3>
+        <p class="modal-desc">Ufkunuzu genişletecek zirveler, teknik atölyeler ve networking günleri.</p>
+      </div>
+      
+      <!-- Featured Upcoming Event -->
+      <div class="featured-event-card">
+        <div class="event-glow-border"></div>
+        <div class="event-meta">
+          <span class="event-tag">YAKLAŞAN BÜYÜK ZİRVE</span>
+          <span class="event-date">14 MAYIS 2026</span>
+        </div>
+        <h4 class="event-title">THKÜ Aviation & Innovation Summit '26</h4>
+        <p class="event-summary">Havacılık ve teknoloji dünyasının öncü isimleri kampüsümüzde buluşuyor. Konferanslar, simülatör deneyimleri ve kariyer fırsatları.</p>
+        
+        <!-- Countdown timer -->
+        <div class="countdown-container">
+          <div class="time-box">
+            <span class="time-value" id="cd-days">42</span>
+            <span class="time-label">Gün</span>
+          </div>
+          <div class="time-sep">:</div>
+          <div class="time-box">
+            <span class="time-value" id="cd-hours">18</span>
+            <span class="time-label">Saat</span>
+          </div>
+          <div class="time-sep">:</div>
+          <div class="time-box">
+            <span class="time-value" id="cd-minutes">25</span>
+            <span class="time-label">Dakika</span>
+          </div>
+          <div class="time-sep">:</div>
+          <div class="time-box">
+            <span class="time-value" id="cd-seconds">40</span>
+            <span class="time-label">Saniye</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Past & Regular Events List -->
+      <div class="events-list">
+        <div class="event-row">
+          <div class="event-icon-circle">✈</div>
+          <div class="event-info">
+            <h5>Havacılıkta Yapay Zeka Workshop</h5>
+            <p>TUSAŞ mühendislerinin katılımıyla uygulamalı uçuş dinamiği veri analizi.</p>
+          </div>
+          <span class="event-status-pill">Tamamlandı</span>
+        </div>
+        <div class="event-row">
+          <div class="event-icon-circle">🚀</div>
+          <div class="event-info">
+            <h5>THKÜ Hackathon & Ideathon</h5>
+            <p>48 saatlik aralıksız havacılık yazılımları geliştirme maratonu.</p>
+          </div>
+          <span class="event-status-pill">Tamamlandı</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: EKİPLERİMİZ -->
+  <div class="modal-backdrop" id="modal-teams">
+    <div class="modal-box modal-wide">
+      <button class="modal-close" aria-label="Kapat">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">BİZ KİMİZ?</div>
+        <h3 class="modal-title">Ekiplerimiz</h3>
+        <p class="modal-desc">Farklı yeteneklerin tek bir vizyon etrafında kenetlendiği dinamik çalışma departmanlarımız.</p>
+      </div>
+      <div class="teams-grid">
+        <div class="team-card">
+          <div class="team-icon">🛠</div>
+          <h4>AR-GE & Mühendislik</h4>
+          <p>İnsansız sistemler, model uçak tasarımı, aviyonik yazılımlar ve aerodinamik testler yürüten teknik güç merkezi.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-icon">⚡</div>
+          <h4>Yazılım & İnovasyon</h4>
+          <p>Kulüp projelerinin dijital mimarisini, web ve mobil uygulamalarını geliştiren ve hackathonlara hazırlanan kod ekibi.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-icon">🎯</div>
+          <h4>Organizasyon & Operasyon</h4>
+          <p>Zirveler, sektör teknik gezileri, workshoplar ve kampüs içi etkinliklerin kusursuz koordinasyonu.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-icon">🎨</div>
+          <h4>Medya, Tasarım & İletişim</h4>
+          <p>Görsel kimlik, afişler, video prodüksiyonları ve sosyal medya kanallarının profesyonel yönetimi.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-icon">🤝</div>
+          <h4>Sponsorluk & Dış İlişkiler</h4>
+          <p>Sektör liderleri, havacılık şirketleri ve mezunlarla köprü kurarak projelerimize kaynak sağlayan ekip.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-icon">🏛</div>
+          <h4>Yönetim Kurulu</h4>
+          <p>Kulübün vizyonunu belirleyen, hedefleri takip eden ve üyeler arasındaki sinerjiyi yöneten çekirdek kadro.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: iCON HAKKINDA -->
+  <div class="modal-backdrop" id="modal-about">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Kapat">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">VİZYON & MİSYON</div>
+        <h3 class="modal-title">iCON Hakkında</h3>
+        <p class="modal-desc">"More Than A Club" felsefesiyle geleceğin havacılarını ve liderlerini yetiştiriyoruz.</p>
+      </div>
+      <div class="about-content">
+        <div class="about-block">
+          <h4>Biz Kimiz?</h4>
+          <p>
+            <strong>iCON (Innovation, Career, Organization, Network)</strong>, Türk Hava Kurumu Üniversitesi bünyesinde öğrencilerin teorik bilgilerini gerçek dünya projelerine dönüştürmek amacıyla kurulmuş bağımsız bir inovasyon ve kariyer topluluğudur.
+          </p>
+        </div>
+        <div class="about-block">
+          <h4>Temel Değerlerimiz</h4>
+          <ul class="values-list">
+            <li><strong>Disiplin & Özgürlük:</strong> "Discipline Creates Freedom" inancıyla çalışır, titiz planlamayla sınırları aşarız.</li>
+            <li><strong>Birlikte Yükselmek:</strong> "Higher Ideas, Further Together" diyerek tek tek değil, bir ekip olarak başarırız.</li>
+            <li><strong>Geniş Ufuklar:</strong> "Same Students. Bigger Horizons." vizyonuyla kampüsümüzden küresel havacılık arenasına uzanırız.</li>
+          </ul>
+        </div>
+        <div class="about-block stats-row">
+          <div class="stat-pill">
+            <span class="stat-num">500+</span>
+            <span class="stat-txt">Aktif Üye</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num">12+</span>
+            <span class="stat-txt">Tamamlanan Proje</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num">25+</span>
+            <span class="stat-txt">Sektör Buluşması</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
