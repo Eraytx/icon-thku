@@ -14,9 +14,14 @@
  * 9. Oluşturulan "Web Uygulaması URL'si"ni kopyalayın ve main.js içerisindeki GOOGLE_APPS_SCRIPT_URL değişkenine yapıştırın.
  */
 
+const SPREADSHEET_ID = "1HgIk1uXtuNLqN99XEvV5co7pvmG39xAxlgWuk8cc4DM";
+
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SPREADSHEET_ID 
+      ? SpreadsheetApp.openById(SPREADSHEET_ID) 
+      : SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getActiveSheet() || ss.getSheets()[0];
     
     // İlk satır başlıkları yoksa otomatik oluştur
     if (sheet.getLastRow() === 0) {
