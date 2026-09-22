@@ -3,15 +3,32 @@
 // Core Logic, Interactivity & Ambient Effects
 // ==========================================================================
 
+// Google Apps Script Web App Endpoint for Google Sheets / Excel Sync
+// Google E-Tablonuzdaki Uzantılar > Apps Script kısmından aldığınız URL'yi buraya yapıştırabilirsiniz.
+const GOOGLE_APPS_SCRIPT_URL = ""; 
+
+// Resmi WhatsApp Grup Bağlantısı
+const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/Ds0PxK28sAcKc9b2IG0fw3";
+
 document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initForm();
-  initCountdown();
   initAmbientCanvas();
   initAudioAmbience();
   initViewModeToggle();
   initCardTiltEffect();
+  initGroupLinks();
 });
+
+/* --------------------------------------------------------------------------
+   0. Link Configurations
+   -------------------------------------------------------------------------- */
+function initGroupLinks() {
+  const wpMain = document.getElementById('wpMainLink');
+  const wpJoin = document.getElementById('wpJoinCard');
+  if (wpMain) wpMain.href = WHATSAPP_GROUP_LINK;
+  if (wpJoin) wpJoin.href = WHATSAPP_GROUP_LINK;
+}
 
 /* --------------------------------------------------------------------------
    1. Modal System
@@ -68,7 +85,7 @@ function closeModal(modal) {
 }
 
 /* --------------------------------------------------------------------------
-   2. Interactive Form Submission
+   2. Interactive Form Submission & Google Sheets (Apps Script) Sync
    -------------------------------------------------------------------------- */
 function initForm() {
   const form = document.getElementById('join-form');
@@ -81,24 +98,37 @@ function initForm() {
     e.preventDefault();
 
     const applicationData = {
-      fullName: document.getElementById('fullName').value,
-      studentId: document.getElementById('studentId').value,
+      fullName: document.getElementById('fullName').value.trim(),
+      studentId: document.getElementById('studentId').value.trim(),
       department: document.getElementById('department').value,
-      email: document.getElementById('email').value,
-      teamInterest: document.getElementById('teamInterest').value,
-      motivation: document.getElementById('motivation').value,
+      email: document.getElementById('email').value.trim(),
+      motivation: document.getElementById('motivation').value.trim(),
       timestamp: new Date().toISOString()
     };
 
-    // Save locally
+    // 1. Tarayıcı yerel yedeğine kaydet
     const saved = JSON.parse(localStorage.getItem('icon_applications') || '[]');
     saved.push(applicationData);
     localStorage.setItem('icon_applications', JSON.stringify(saved));
 
-    // Play chime sound
+    // 2. Google Apps Script / Google Sheets (Excel) API'sine otomatik aktar
+    if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL.trim().startsWith('http')) {
+      try {
+        fetch(GOOGLE_APPS_SCRIPT_URL.trim(), {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(applicationData)
+        }).catch(err => console.warn('Google Sheets sync notice:', err));
+      } catch (err) {
+        console.warn('Apps Script request failed:', err);
+      }
+    }
+
+    // Başarı ses efekti çal
     playSuccessSound();
 
-    // Show success view
+    // Başarı ekranına geç
     form.classList.add('hidden');
     successBox.classList.remove('hidden');
   });
@@ -110,43 +140,6 @@ function initForm() {
       successBox.classList.add('hidden');
     });
   }
-}
-
-/* --------------------------------------------------------------------------
-   3. Live Countdown Timer
-   -------------------------------------------------------------------------- */
-function initCountdown() {
-  const daysEl = document.getElementById('cd-days');
-  const hoursEl = document.getElementById('cd-hours');
-  const minsEl = document.getElementById('cd-minutes');
-  const secsEl = document.getElementById('cd-seconds');
-
-  if (!daysEl) return;
-
-  // Target date: May 14, 2026
-  const targetDate = new Date('2026-05-14T09:30:00+03:00').getTime();
-
-  function update() {
-    const now = new Date().getTime();
-    let diff = targetDate - now;
-
-    if (diff < 0) {
-      diff = 1000 * 60 * 60 * 24 * 30; // fallback rolling 30 days
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    daysEl.textContent = String(days).padStart(2, '0');
-    hoursEl.textContent = String(hours).padStart(2, '0');
-    minsEl.textContent = String(minutes).padStart(2, '0');
-    secsEl.textContent = String(seconds).padStart(2, '0');
-  }
-
-  update();
-  setInterval(update, 1000);
 }
 
 /* --------------------------------------------------------------------------

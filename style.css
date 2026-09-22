@@ -929,48 +929,239 @@ html, body {
    Projects Grid Modal
    ========================================================================== */
 
+/* Modal Header Top & Excel Button */
+.modal-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-excel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 8px;
+  color: #4ade80;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.admin-excel-btn:hover {
+  background: rgba(34, 197, 94, 0.28);
+  border-color: #4ade80;
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Success Groups Box (Instant WhatsApp & Instagram) */
+.success-groups-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0;
+  text-align: left;
+}
+
+.group-join-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(18, 30, 48, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+  color: #ffffff;
+  transition: var(--transition-smooth);
+}
+
+.group-join-card.wp-card:hover {
+  background: rgba(22, 45, 40, 0.85);
+  border-color: #22c55e;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  transform: translateY(-2px);
+}
+
+.group-join-card.insta-card:hover {
+  background: rgba(45, 20, 35, 0.85);
+  border-color: #e1306c;
+  box-shadow: 0 0 20px rgba(225, 48, 108, 0.3);
+  transform: translateY(-2px);
+}
+
+.group-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.group-icon-circle.wp-bg {
+  background: #25D366;
+  color: #ffffff;
+}
+
+.group-icon-circle.insta-bg {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #ffffff;
+}
+
+.group-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.group-tag {
+  font-family: var(--font-tech);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.8px;
+}
+
+.group-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.group-desc {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.group-arrow {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.group-join-card:hover .group-arrow {
+  transform: translateX(4px);
+  color: #ffffff;
+}
+
+.success-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.export-excel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #4ade80;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.export-excel-btn:hover {
+  background: rgba(34, 197, 94, 0.32);
+  border-color: #4ade80;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Projects Grid Modal
+   ========================================================================== */
+
 .projects-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 16px;
 }
 
 .project-item {
-  background: rgba(18, 30, 48, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 16px;
+  background: rgba(18, 30, 48, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
   transition: var(--transition-smooth);
 }
 
 .project-item:hover {
-  background: rgba(25, 42, 68, 0.65);
-  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(25, 42, 68, 0.8);
+  border-color: rgba(56, 189, 248, 0.45);
   transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.project-status {
+.project-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.project-status.live-status {
   display: inline-block;
   font-family: var(--font-tech);
-  font-size: 0.58rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #38bdf8;
-  margin-bottom: 6px;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.project-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  transition: var(--transition-smooth);
+}
+
+.project-apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.6);
+  filter: brightness(1.15);
 }
 
 .project-item h4 {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #ffffff;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .project-item p {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #94a3b8;
-  line-height: 1.4;
-  margin-bottom: 10px;
+  line-height: 1.45;
+  margin-bottom: 12px;
 }
 
 .project-tags {
@@ -981,67 +1172,82 @@ html, body {
 
 .project-tags span {
   font-size: 0.65rem;
-  padding: 2px 8px;
+  padding: 3px 8px;
   background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   color: #cbd5e1;
 }
 
 /* ==========================================================================
-   Events Modal & Countdown
+   Events Modal (Empty State)
    ========================================================================== */
 
-.featured-event-card {
-  background: linear-gradient(135deg, rgba(30, 58, 95, 0.65) 0%, rgba(15, 25, 45, 0.75) 100%);
-  border: 1.5px solid rgba(56, 189, 248, 0.5);
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
-}
-
-.event-meta {
+.empty-event-card {
+  text-align: center;
+  padding: 38px 20px;
+  background: rgba(15, 24, 40, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 14px;
 }
 
-.event-tag {
-  font-family: var(--font-tech);
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: #38bdf8;
-  letter-spacing: 1px;
-}
-
-.event-date {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #fbbf24;
-}
-
-.event-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  color: #ffffff;
-  margin-bottom: 6px;
-}
-
-.event-summary {
-  font-size: 0.78rem;
-  color: #cbd5e1;
-  margin-bottom: 14px;
-}
-
-.countdown-container {
+.empty-icon-circle {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--accent-cyan);
+}
+
+.empty-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.empty-desc {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+.empty-action-btn {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  background: rgba(7, 12, 22, 0.65);
-  border-radius: 12px;
-  padding: 10px 14px;
+  margin-top: 6px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.3) 0%, rgba(220, 39, 67, 0.4) 100%);
+  border: 1px solid rgba(225, 48, 108, 0.55);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: var(--transition-smooth);
+}
+
+.empty-action-btn:hover {
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.45) 0%, rgba(220, 39, 67, 0.55) 100%);
+  box-shadow: 0 0 20px rgba(225, 48, 108, 0.4);
+  transform: translateY(-2px);
+}
+
+/* WhatsApp Social Button Hover */
+.social-btn.wp-btn:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.45);
 }
 
 .time-box {
