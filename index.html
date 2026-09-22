@@ -14,32 +14,8 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <!-- Atmospheric Canvas for city lights & night stars -->
+  <!-- Atmospheric Canvas for city lights & night stars (Desktop only) -->
   <canvas id="ambient-canvas"></canvas>
-
-  <!-- Ambient Sound Toggle / View Mode Control -->
-  <div class="top-controls">
-    <button id="sound-toggle" class="control-btn" title="Atmosferik Ses / Efekt">
-      <svg class="sound-icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-      </svg>
-      <svg class="sound-icon-off hidden" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <line x1="23" y1="9" x2="17" y2="15"></line>
-        <line x1="17" y1="9" x2="23" y2="15"></line>
-      </svg>
-      <span class="control-label">Atmosfer</span>
-    </button>
-    <button id="view-mode-toggle" class="control-btn" title="Görünüm Modunu Değiştir">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="5" y="2" width="14" height="20" rx="3"></rect>
-        <line x1="12" y1="18" x2="12.01" y2="18"></line>
-      </svg>
-      <span class="control-label" id="view-mode-label">Mobil Odak</span>
-    </button>
-  </div>
 
   <!-- Main Background Container with Cinematic Image -->
   <div class="page-container">

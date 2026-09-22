@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initForm();
   initAmbientCanvas();
-  initAudioAmbience();
-  initViewModeToggle();
   initCardTiltEffect();
   initGroupLinks();
 });
@@ -149,9 +147,16 @@ function initForm() {
 }
 
 /* --------------------------------------------------------------------------
-   4. Ambient Canvas Particles (Night sky stars & subtle floating dust)
+   4. Ambient Canvas Particles (Desktop Only - Disabled on Mobile for 60fps)
    -------------------------------------------------------------------------- */
 function initAmbientCanvas() {
+  // Telefondaki kasılmaları önlemek için mobilde canvas animasyonunu tamamen devre dışı bırak
+  if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) {
+    const canvas = document.getElementById('ambient-canvas');
+    if (canvas) canvas.style.display = 'none';
+    return;
+  }
+
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -160,36 +165,42 @@ function initAmbientCanvas() {
   let height = (canvas.height = window.innerHeight);
 
   window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768) {
+      canvas.style.display = 'none';
+      return;
+    }
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
   });
 
   const particles = [];
-  const particleCount = Math.min(width < 768 ? 35 : 65, 80);
+  const particleCount = 35; // Performans için optimize edildi
 
   for (let i = 0; i < particleCount; i++) {
     particles.push({
       x: Math.random() * width,
-      y: Math.random() * height * 0.65, // upper sky focus
-      size: Math.random() * 1.6 + 0.4,
-      alpha: Math.random() * 0.7 + 0.2,
-      speedY: -(Math.random() * 0.15 + 0.05),
-      speedX: (Math.random() - 0.5) * 0.1,
-      pulse: Math.random() * 0.03 + 0.01,
+      y: Math.random() * height * 0.65,
+      size: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.6 + 0.2,
+      speedY: -(Math.random() * 0.12 + 0.04),
+      speedX: (Math.random() - 0.5) * 0.08,
+      pulse: Math.random() * 0.02 + 0.01,
       pulseDir: 1
     });
   }
 
   function animate() {
+    if (window.innerWidth <= 768) return;
     ctx.clearRect(0, 0, width, height);
 
-    particles.forEach(p => {
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
       p.y += p.speedY;
       p.x += p.speedX;
 
       p.alpha += p.pulse * p.pulseDir;
-      if (p.alpha >= 0.85) {
-        p.alpha = 0.85;
+      if (p.alpha >= 0.8) {
+        p.alpha = 0.8;
         p.pulseDir = -1;
       } else if (p.alpha <= 0.15) {
         p.alpha = 0.15;
@@ -206,10 +217,8 @@ function initAmbientCanvas() {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(180, 220, 255, ${p.alpha})`;
-      ctx.shadowBlur = 4;
-      ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
       ctx.fill();
-    });
+    }
 
     requestAnimationFrame(animate);
   }
@@ -218,148 +227,56 @@ function initAmbientCanvas() {
 }
 
 /* --------------------------------------------------------------------------
-   5. Web Audio Ambient Drone & UI Feedback (Zero external audio assets)
+   5. Lightweight UI Audio Feedback
    -------------------------------------------------------------------------- */
 let audioCtx = null;
-let ambientGain = null;
-let isAudioPlaying = false;
-
-function initAudioAmbience() {
-  const soundBtn = document.getElementById('sound-toggle');
-  const onIcon = soundBtn?.querySelector('.sound-icon-on');
-  const offIcon = soundBtn?.querySelector('.sound-icon-off');
-
-  if (!soundBtn) return;
-
-  soundBtn.addEventListener('click', () => {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    if (!isAudioPlaying) {
-      startAmbientCabinDrone();
-      isAudioPlaying = true;
-      onIcon.classList.remove('hidden');
-      offIcon.classList.add('hidden');
-      soundBtn.style.borderColor = '#38bdf8';
-    } else {
-      stopAmbientCabinDrone();
-      isAudioPlaying = false;
-      onIcon.classList.add('hidden');
-      offIcon.classList.remove('hidden');
-      soundBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-    }
-  });
-}
-
-function startAmbientCabinDrone() {
-  if (!audioCtx) return;
-
-  // White noise node for gentle wind/cabin airflow
-  const bufferSize = audioCtx.sampleRate * 2;
-  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    output[i] = Math.random() * 2 - 1;
-  }
-
-  const whiteNoise = audioCtx.createBufferSource();
-  whiteNoise.buffer = noiseBuffer;
-  whiteNoise.loop = true;
-
-  // Bandpass filter for soothing jet airliner cabin hum
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = 180;
-
-  ambientGain = audioCtx.createGain();
-  ambientGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-  ambientGain.gain.exponentialRampToValueAtTime(0.09, audioCtx.currentTime + 2);
-
-  whiteNoise.connect(filter);
-  filter.connect(ambientGain);
-  ambientGain.connect(audioCtx.destination);
-
-  whiteNoise.start();
-  window._activeAmbientSource = whiteNoise;
-}
-
-function stopAmbientCabinDrone() {
-  if (ambientGain && audioCtx) {
-    ambientGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
-    setTimeout(() => {
-      if (window._activeAmbientSource) {
-        window._activeAmbientSource.stop();
-        window._activeAmbientSource = null;
-      }
-    }, 1000);
-  }
-}
 
 function playClickSound(freq = 440) {
-  if (!audioCtx) return;
   try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'sine';
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.07);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.08);
+    osc.stop(audioCtx.currentTime + 0.07);
   } catch (e) {}
 }
 
 function playSuccessSound() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
   try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const now = audioCtx.currentTime;
     [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, now + i * 0.09);
-      gain.gain.setValueAtTime(0.06, now + i * 0.09);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.35);
+      osc.frequency.setValueAtTime(freq, now + i * 0.08);
+      gain.gain.setValueAtTime(0.05, now + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.start(now + i * 0.09);
-      osc.stop(now + i * 0.09 + 0.35);
+      osc.start(now + i * 0.08);
+      osc.stop(now + i * 0.08 + 0.3);
     });
   } catch (e) {}
 }
 
 /* --------------------------------------------------------------------------
-   6. View Mode Toggle (Mobile / Wide Layout)
-   -------------------------------------------------------------------------- */
-function initViewModeToggle() {
-  const toggleBtn = document.getElementById('view-mode-toggle');
-  const label = document.getElementById('view-mode-label');
-
-  if (!toggleBtn) return;
-
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('mobile-preview');
-    const isMobilePreview = document.body.classList.contains('mobile-preview');
-    label.textContent = isMobilePreview ? 'Geniş Ekran' : 'Mobil Odak';
-    playClickSound(480);
-  });
-}
-
-/* --------------------------------------------------------------------------
-   7. Card Subtle 3D Tilt Effect
+   6. Card Tilt Effect (Masaüstü için - Mobilde Pil & FPS Koruma)
    -------------------------------------------------------------------------- */
 function initCardTiltEffect() {
+  // Dokunmatik ve mobil ekranlarda tilt hesaplamalarını çalıştırma
+  if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768) {
+    return;
+  }
+
   const cards = document.querySelectorAll('.glass-card');
 
   cards.forEach(card => {
@@ -370,8 +287,8 @@ function initCardTiltEffect() {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
+      const rotateX = ((y - centerY) / centerY) * -4;
+      const rotateY = ((x - centerX) / centerX) * 4;
 
       card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
     });

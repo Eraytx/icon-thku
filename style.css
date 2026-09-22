@@ -80,40 +80,7 @@ html, body {
   z-index: 1;
 }
 
-/* Top Utility Controls */
-.top-controls {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 90;
-  display: flex;
-  gap: 10px;
-}
-
-.control-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--text-main);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.control-btn:hover {
-  background: rgba(30, 45, 70, 0.85);
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-  transform: translateY(-1px);
-}
-
+/* Hidden Utility Class */
 .hidden {
   display: none !important;
 }
@@ -152,7 +119,7 @@ html, body {
 
 /* Responsive Desktop Layout: 2 Columns */
 @media (min-width: 960px) {
-  body:not(.mobile-preview) .site-wrapper {
+  .site-wrapper {
     max-width: 1180px;
     width: 94%;
     display: grid;
@@ -1451,4 +1418,81 @@ html, body {
   font-size: 0.65rem;
   color: #94a3b8;
   margin-top: 2px;
+}
+
+/* ==========================================================================
+   MOBILE PERFORMANCE & 60FPS OPTIMIZATIONS (Kasma Önleme & Akıcılık)
+   ========================================================================== */
+@media (max-width: 768px), (pointer: coarse) {
+  /* 1. Mobilde scroll kasmasını önleyen kritik düzeltme: background-attachment fixed kaldırıldı */
+  html, body {
+    background-attachment: scroll !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+  }
+
+  /* 2. Canvas arka plan animasyonunu mobilde kapat */
+  #ambient-canvas {
+    display: none !important;
+  }
+
+  /* 3. GPU'yu zorlayan ağır backdrop-filter (bulanıklık) filtrelerini mobilde devreden çıkar */
+  *, *::before, *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* 4. Bulanıklık yerine yüksek performanslı, akıcı koyu cam arka planlar tanımla */
+  .glass-card {
+    background: rgba(13, 23, 38, 0.94) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    transform: none !important;
+  }
+
+  .glass-card.primary-card {
+    background: linear-gradient(135deg, rgba(20, 50, 85, 0.95) 0%, rgba(12, 28, 48, 0.95) 100%) !important;
+    border-color: rgba(96, 165, 250, 0.7) !important;
+    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35) !important;
+  }
+
+  /* Kart içi gereksiz animasyon katmanlarını devreden çıkar */
+  .glass-card::before {
+    display: none !important;
+  }
+
+  .glass-card:hover {
+    transform: none !important;
+  }
+
+  .glass-card:active {
+    transform: scale(0.98) !important;
+  }
+
+  .university-block {
+    background: rgba(15, 23, 42, 0.92) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .discipline-badge {
+    background: rgba(10, 18, 30, 0.85) !important;
+  }
+
+  /* 5. Modallar için yüksek performanslı pürüzsüz arka plan */
+  .modal-backdrop {
+    background: rgba(2, 6, 12, 0.88) !important;
+  }
+
+  .modal-box {
+    background: rgba(11, 18, 30, 0.98) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-card, .team-card, .group-join-card {
+    background: rgba(18, 29, 46, 0.9) !important;
+  }
 }
