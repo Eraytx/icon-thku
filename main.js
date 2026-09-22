@@ -4,8 +4,10 @@
 // ==========================================================================
 
 // Google Apps Script Web App Endpoint for Google Sheets / Excel Sync
-// Google E-Tablonuzdaki Uzantılar > Apps Script kısmından aldığınız URL'yi buraya yapıştırabilirsiniz.
-const GOOGLE_APPS_SCRIPT_URL = ""; 
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTuiAuS46e46nGb1y8ZT3Foevaod6WmoBBcLMls6NG_uvbqROfFCDC7raWNIUEZcna/exec"; 
+
+// Google E-Tablo Bağlantısı (Yedek & Referans)
+const GOOGLE_SHEET_VIEW_URL = "https://docs.google.com/spreadsheets/d/1HgIk1uXtuNLqN99XEvV5co7pvmG39xAxlgWuk8cc4DM/edit?usp=sharing";
 
 // Resmi WhatsApp Grup Bağlantısı
 const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/Ds0PxK28sAcKc9b2IG0fw3";
@@ -117,11 +119,15 @@ function initForm() {
         fetch(GOOGLE_APPS_SCRIPT_URL.trim(), {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(applicationData)
-        }).catch(err => console.warn('Google Sheets sync notice:', err));
+        }).then(() => {
+          console.log('Başvuru Google E-Tabloya başarıyla iletildi.');
+        }).catch(err => {
+          console.warn('Google Sheets senkronizasyon uyarısı:', err);
+        });
       } catch (err) {
-        console.warn('Apps Script request failed:', err);
+        console.warn('Apps Script isteği başlatılamadı:', err);
       }
     }
 
